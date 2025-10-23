@@ -7,11 +7,12 @@
     "dev": "nodemon app.js"        
   },
   "dependencies": {
-    "express": "^4.17.1",          
-    "mysql2": "^2.3.3",            
-    "dotenv": "^10.0.0"            
+    "express": "^4.17.1",          // Framework de Node.js
+    "mysql2": "^2.3.3",            // Cliente MySQL para Node.js
+    "dotenv": "^10.0.0",           // Manejo de variables de entorno
+    "cors": "^2.8.5"               // Middleware para habilitar CORS
   },
   "engines": {
-    "node": "16.x"              
+    "node": "16.x"                 // Versión recomendada de Node.js para Render
   }
 }
