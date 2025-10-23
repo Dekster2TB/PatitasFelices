@@ -1,20 +1,15 @@
 {
-  "name": "patitas_felices_api",
+  "name": "patitas-felices-api",
   "version": "1.0.0",
-  "description": "",
   "main": "app.js",
   "scripts": {
-    "start": "node app.js"
+    "start": "node app.js",
+    "dev": "nodemon app.js"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
   "dependencies": {
-    "express": "^5.1.0",
-    "mysql": "^2.18.1",
-    "pg": "^8.16.3"
-  },
-  "engines": {
-    "node": ">=18"
+    "express": "^4.17.1",
+    "pg": "^8.7.1",  // Si usas PostgreSQL
+    "mysql2": "^2.3.3",  // Si usas MySQL
+    "dotenv": "^10.0.0"
   }
 }
