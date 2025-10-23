@@ -19,7 +19,6 @@ const pool = mysql.createPool({
   queueLimit: 0,
 });
 
-// Middleware
 app.use(cors());
 app.use(express.json());
 
@@ -43,7 +42,7 @@ app.get('/ping-db', async (req, res) => {
 
 
 
-const mascotasRoutes = require('./routes/mascotasRoutes');
+const mascotasRoutes = require('./routes/mascotasRoutes.js');
 app.use('/api/mascotas', mascotasRoutes);
 
 
