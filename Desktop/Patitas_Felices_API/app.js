@@ -1,32 +1,28 @@
-require('dotenv').config();  
+require('dotenv').config();
 const express = require('express');
+const mysql = require('mysql2/promise');
 const cors = require('cors');
 
-
-const mascotasRoutes = require('./routes/mascotasRoutes');
-const duenosRoutes = require('./routes/duenosRoutes');
-const citasRoutes = require('./routes/citasRoutes');
-const medicosRoutes = require('./routes/medicosRoutes');
-const tratamientosRoutes = require('./routes/tratamientosRoutes');
-const fichasRoutes = require('./routes/fichasRoutes');
-
-
 const app = express();
+const PORT = process.env.PORT || 10000;
 
 
-const PORT = process.env.PORT || 10000;  
+const pool = mysql.createPool({
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASS,
+  database: process.env.DB_NAME,
+  port: process.env.DB_PORT || 3306,
+  ssl: process.env.DB_SSL === 'true' ? {} : undefined,
+  waitForConnections: true,
+  connectionLimit: 10,
+  queueLimit: 0,
+});
 
-
+// Middleware
 app.use(cors());
 app.use(express.json());
 
-// Usar las rutas importadas
-app.use('/api/mascotas', mascotasRoutes);        
-app.use('/api/duenos', duenosRoutes);            
-app.use('/api/citas', citasRoutes);              
-app.use('/api/medicos', medicosRoutes);          
-app.use('/api/tratamientos', tratamientosRoutes); 
-app.use('/api/fichas', fichasRoutes);            
 
 
 app.get('/', (req, res) => {
@@ -36,13 +32,39 @@ app.get('/', (req, res) => {
 
 app.get('/ping-db', async (req, res) => {
   try {
-    const [r] = await pool.query('SELECT 1 AS ok');  
-    res.json(r);  
+    const [r] = await pool.query('SELECT 1 AS ok');
+    res.json(r);
   } catch (err) {
     console.error('Error DB (ping):', err);
     res.status(500).send('No me pude conectar a MySQL');
   }
 });
+
+
+
+
+const mascotasRoutes = require('./routes/mascotasRoutes');
+app.use('/api/mascotas', mascotasRoutes);
+
+
+const duenosRoutes = require('./routes/duenosRoutes');
+app.use('/api/duenos', duenosRoutes);
+
+
+const citasRoutes = require('./routes/citasRoutes');
+app.use('/api/citas', citasRoutes);
+
+
+const medicosRoutes = require('./routes/medicosRoutes');
+app.use('/api/medicos', medicosRoutes);
+
+
+const tratamientosRoutes = require('./routes/tratamientosRoutes');
+app.use('/api/tratamientos', tratamientosRoutes);
+
+
+const fichasRoutes = require('./routes/fichasRoutes');
+app.use('/api/fichas', fichasRoutes);
 
 
 app.listen(PORT, () => {
