@@ -1,18 +1,16 @@
-const pool = require('../config/database'); // Importa la conexión a la base de datos
+const pool = require('../config/database');
 
 const mascotasController = {
-  // Obtener todas las mascotas
   obtenerTodos: async (req, res) => {
     try {
       const [rows] = await pool.query('SELECT * FROM mascotas');
-      res.status(200).json(rows);  // Responde con todas las mascotas
+      res.status(200).json(rows);
     } catch (error) {
       console.error('Error al obtener mascotas:', error);
       res.status(500).json({ message: 'Error al obtener las mascotas', error: error.message });
     }
   },
 
-  // Obtener una mascota por su ID
   obtenerPorId: async (req, res) => {
     const { id } = req.params;
     try {
@@ -20,14 +18,13 @@ const mascotasController = {
       if (rows.length === 0) {
         return res.status(404).json({ message: 'Mascota no encontrada' });
       }
-      res.status(200).json(rows[0]);  // Responde con los datos de la mascota
+      res.status(200).json(rows[0]);
     } catch (error) {
       console.error('Error al obtener la mascota:', error);
       res.status(500).json({ message: 'Error al obtener la mascota', error: error.message });
     }
   },
 
-  // Crear una nueva mascota
   crear: async (req, res) => {
     const { nombre, especie, raza, edad, id_dueno } = req.body;
     try {
@@ -36,14 +33,13 @@ const mascotasController = {
         [nombre, especie, raza, edad, id_dueno]
       );
       const nuevaMascota = { id_mascota: result.insertId, nombre, especie, raza, edad, id_dueno };
-      res.status(201).json(nuevaMascota);  // Responde con la nueva mascota creada
+      res.status(201).json(nuevaMascota);
     } catch (error) {
       console.error('Error al crear la mascota:', error);
       res.status(500).json({ message: 'Error al crear la mascota', error: error.message });
     }
   },
 
-  // Actualizar los datos de una mascota existente
   actualizar: async (req, res) => {
     const { id } = req.params;
     const { nombre, especie, raza, edad, id_dueno } = req.body;
@@ -56,14 +52,13 @@ const mascotasController = {
         return res.status(404).json({ message: 'Mascota no encontrada' });
       }
       const mascotaActualizada = { id_mascota: id, nombre, especie, raza, edad, id_dueno };
-      res.status(200).json(mascotaActualizada);  // Responde con la mascota actualizada
+      res.status(200).json(mascotaActualizada);
     } catch (error) {
       console.error('Error al actualizar la mascota:', error);
       res.status(500).json({ message: 'Error al actualizar la mascota', error: error.message });
     }
   },
 
-  // Eliminar una mascota
   eliminar: async (req, res) => {
     const { id } = req.params;
     try {
@@ -71,7 +66,7 @@ const mascotasController = {
       if (result.affectedRows === 0) {
         return res.status(404).json({ message: 'Mascota no encontrada' });
       }
-      res.status(200).json({ message: 'Mascota eliminada con éxito' });  // Responde con mensaje de eliminación exitosa
+      res.status(200).json({ message: 'Mascota eliminada con éxito' });
     } catch (error) {
       console.error('Error al eliminar la mascota:', error);
       res.status(500).json({ message: 'Error al eliminar la mascota', error: error.message });
