@@ -42,7 +42,7 @@ app.get('/ping-db', async (req, res) => {
 
 
 
-const mascotasRoutes = require('.src/routes/mascotasRoutes.js');
+const mascotasRoutes = require('./src/routes/mascotasRoutes');
 app.use('/api/mascotas', mascotasRoutes);
 
 
