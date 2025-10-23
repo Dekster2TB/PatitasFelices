@@ -3,13 +3,15 @@
   "version": "1.0.0",
   "main": "app.js",
   "scripts": {
-    "start": "node app.js",
-    "dev": "nodemon app.js"
+    "start": "node app.js",        // Comando para iniciar la API
+    "dev": "nodemon app.js"        // Usado en desarrollo si usas nodemon
   },
   "dependencies": {
-    "express": "^4.17.1",
-    "pg": "^8.7.1",  // Si usas PostgreSQL
-    "mysql2": "^2.3.3",  // Si usas MySQL
-    "dotenv": "^10.0.0"
+    "express": "^4.17.1",          // Framework web de Node.js
+    "mysql2": "^2.3.3",            // Cliente MySQL para Node.js
+    "dotenv": "^10.0.0"            // Para manejar las variables de entorno
+  },
+  "engines": {
+    "node": "16.x"                 // Versión recomendada de Node.js para Render
   }
 }
