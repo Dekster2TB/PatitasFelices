@@ -1,118 +1,50 @@
-require('dotenv').config();
+require('dotenv').config();  // Cargar las variables de entorno desde el archivo .env
 const express = require('express');
-const mysql = require('mysql2/promise');
+const cors = require('cors');
 
+// Importar las rutas de las diferentes tablas
+const mascotasRoutes = require('./routes/mascotasRoutes');
+const duenosRoutes = require('./routes/duenosRoutes');
+const citasRoutes = require('./routes/citasRoutes');
+const medicosRoutes = require('./routes/medicosRoutes');
+const tratamientosRoutes = require('./routes/tratamientosRoutes');
+const fichasRoutes = require('./routes/fichasRoutes');
+
+// Crear una nueva instancia de Express
 const app = express();
-const PORT = process.env.PORT || 10000;  // Asegúrate de que el puerto no esté en conflicto
 
-// Configurar conexión a la base de datos MySQL
-const pool = mysql.createPool({
-  host: process.env.DB_HOST,   // Se usa DB_HOST en lugar de MYSQL_URL
-  user: process.env.DB_USER,
-  password: process.env.DB_PASS,
-  database: process.env.DB_NAME,
-  port: process.env.DB_PORT || 3306,  // El puerto puede ser 3306 por defecto
-  ssl: process.env.DB_SSL === 'true' ? {} : undefined,  // Configuración SSL si es necesario
-  waitForConnections: true,
-  connectionLimit: 10,
-  queueLimit: 0,
-});
-// Middleware (por si luego agregas peticiones POST)
+// Configurar el puerto de la aplicación (Render lo proporcionará a través de process.env.PORT)
+const PORT = process.env.PORT || 10000;  // Usar el puerto proporcionado por Render o 10000 por defecto
+
+// Middleware para habilitar CORS y manejar solicitudes JSON
+app.use(cors());
 app.use(express.json());
 
-// -------------------------
-// RUTAS BÁSICAS
-// -------------------------
+// Usar las rutas importadas
+app.use('/api/mascotas', mascotasRoutes);        // Rutas para las mascotas
+app.use('/api/duenos', duenosRoutes);            // Rutas para los dueños
+app.use('/api/citas', citasRoutes);              // Rutas para las citas
+app.use('/api/medicos', medicosRoutes);          // Rutas para los médicos
+app.use('/api/tratamientos', tratamientosRoutes); // Rutas para los tratamientos
+app.use('/api/fichas', fichasRoutes);            // Rutas para las fichas
 
-// Ruta de prueba del servidor
+// Ruta de prueba para comprobar que la API está funcionando correctamente
 app.get('/', (req, res) => {
   res.send('✅ ¡API de Veterinaria funcionando correctamente!');
 });
 
-// Ruta de diagnóstico: prueba conexión a MySQL
+// Ruta para probar la conexión a la base de datos
 app.get('/ping-db', async (req, res) => {
   try {
-    const [r] = await pool.query('SELECT 1 AS ok');
-    res.json(r);
+    const [r] = await pool.query('SELECT 1 AS ok');  // Realizar una consulta simple
+    res.json(r);  // Responder con el resultado de la consulta
   } catch (err) {
     console.error('Error DB (ping):', err);
     res.status(500).send('No me pude conectar a MySQL');
   }
 });
 
-// -------------------------
-// RUTAS DE LAS TABLAS
-// -------------------------
-
-// 1️⃣ Tabla MASCOTAS
-app.get('/mascotas', async (req, res) => {
-  try {
-    const [rows] = await pool.query('SELECT * FROM mascotas');
-    res.json(rows);
-  } catch (err) {
-    console.error('Error DB /mascotas:', err);
-    res.status(500).send('Error al obtener las mascotas');
-  }
-});
-
-// 2️⃣ Tabla DUEÑOS
-app.get('/duenos', async (req, res) => {
-  try {
-    const [rows] = await pool.query('SELECT * FROM duenos');
-    res.json(rows);
-  } catch (err) {
-    console.error('Error DB /duenos:', err);
-    res.status(500).send('Error al obtener los dueños');
-  }
-});
-
-// 3️⃣ Tabla MEDICOS
-app.get('/medicos', async (req, res) => {
-  try {
-    const [rows] = await pool.query('SELECT * FROM medicos');
-    res.json(rows);
-  } catch (err) {
-    console.error('Error DB /medicos:', err);
-    res.status(500).send('Error al obtener los médicos');
-  }
-});
-
-// 4️⃣ Tabla CITAS
-app.get('/citas', async (req, res) => {
-  try {
-    const [rows] = await pool.query('SELECT * FROM citas');
-    res.json(rows);
-  } catch (err) {
-    console.error('Error DB /citas:', err);
-    res.status(500).send('Error al obtener las citas');
-  }
-});
-
-// 5️⃣ Tabla FICHAS
-app.get('/fichas', async (req, res) => {
-  try {
-    const [rows] = await pool.query('SELECT * FROM fichas');
-    res.json(rows);
-  } catch (err) {
-    console.error('Error DB /fichas:', err);
-    res.status(500).send('Error al obtener las fichas');
-  }
-});
-
-// 6️⃣ Tabla TRATAMIENTOS
-app.get('/tratamientos', async (req, res) => {
-  try {
-    const [rows] = await pool.query('SELECT * FROM tratamientos');
-    res.json(rows);
-  } catch (err) {
-    console.error('Error DB /tratamientos:', err);
-    res.status(500).send('Error al obtener los tratamientos');
-  }
-});
-
-// -------------------------
-// INICIO DEL SERVIDOR
-// -------------------------
+// Iniciar el servidor en el puerto configurado
 app.listen(PORT, () => {
   console.log(`🚀 Servidor API escuchando en http://localhost:${PORT}`);
 });
