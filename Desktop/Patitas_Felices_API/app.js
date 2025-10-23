@@ -3,16 +3,16 @@ const express = require('express');
 const mysql = require('mysql2/promise');
 
 const app = express();
-const PORT = process.env.PORT || 10000;
+const PORT = process.env.PORT || 10000;  // Asegúrate de que el puerto no esté en conflicto
 
 // Configurar conexión a la base de datos MySQL
 const pool = mysql.createPool({
-  host: process.env.MYSQL_URL,
-  port: Number(process.env.DB_PORT || 3306),
+  host: process.env.DB_HOST,   // Se usa DB_HOST en lugar de MYSQL_URL
   user: process.env.DB_USER,
   password: process.env.DB_PASS,
   database: process.env.DB_NAME,
-  ssl: process.env.DB_SSL === 'true' ? {} : undefined, // activa SSL si DB_SSL=true
+  port: process.env.DB_PORT || 3306,  // El puerto puede ser 3306 por defecto
+  ssl: process.env.DB_SSL === 'true' ? {} : undefined,  // Configuración SSL si es necesario
   waitForConnections: true,
   connectionLimit: 10,
   queueLimit: 0,
