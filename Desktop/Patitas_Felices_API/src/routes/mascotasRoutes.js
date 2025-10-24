@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const mascotasController = require('../src/controllers/mascotasController');  // Importar el controlador de mascotas
+const mascotasController = require('../controllers/mascotasController');  // Importar el controlador de mascotas
 
 // Definir las rutas CRUD para la tabla 'mascotas'
 router.get('/', mascotasController.obtenerTodos);  // Obtener todas las mascotas
