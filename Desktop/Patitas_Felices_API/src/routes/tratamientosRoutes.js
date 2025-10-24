@@ -1,12 +1,12 @@
 const express = require('express');
 const router = express.Router();
-const tratamientosController = require('../controllers/tratamientosControllers');  // Importar el controlador de tratamientos
+const tratamientosControllers = require('../controllers/tratamientosControllers');  // Importar el controlador de tratamientos
 
 // Definir las rutas CRUD para la tabla 'tratamientos'
-router.get('/', tratamientosController.obtenerTodos);  // Obtener todos los tratamientos
-router.get('/:id', tratamientosController.obtenerPorId);  // Obtener un tratamiento por ID
-router.post('/', tratamientosController.crear);  // Crear un nuevo tratamiento
-router.put('/:id', tratamientosController.actualizar);  // Actualizar los datos de un tratamiento
-router.delete('/:id', tratamientosController.eliminar);  // Eliminar un tratamiento
+router.get('/', tratamientosControllers.obtenerTodos);  // Obtener todos los tratamientos
+router.get('/:id', tratamientosControllers.obtenerPorId);  // Obtener un tratamiento por ID
+router.post('/', tratamientosControllers.crear);  // Crear un nuevo tratamiento
+router.put('/:id', tratamientosControllers.actualizar);  // Actualizar los datos de un tratamiento
+router.delete('/:id', tratamientosControllers.eliminar);  // Eliminar un tratamiento
 
 module.exports = router;  // Exportar las rutas para ser utilizadas en app.js
