@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const medicosController = require('../controllers/medicosController');  // Importar el controlador de médicos
+const medicosControllers = require('../controllers/medicosControllers');  // Importar el controlador de médicos
 
 // Definir las rutas CRUD para la tabla 'medicos'
 router.get('/', medicosControllers.obtenerTodos);  // Obtener todos los médicos
